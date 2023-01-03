@@ -63,11 +63,9 @@ function addNumberOfAnswers() {
 init();
 client
   .channel('public:messages')
-  .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, message => {
-if(message.new.page == pageNumber){
+  .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: `page=eq.${pageNumber}`, }, message => {
 addMessageToPage(message.new);
 addNumberOfAnswers();
-}
   })
   .subscribe();
 document.querySelector('#post-button').onclick = async function(){
